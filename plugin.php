@@ -133,15 +133,17 @@ add_action('admin_menu', 'pmp_plugin_menu');
  */
 function pmp_add_meta_boxes() {
 	$screen = get_current_screen();
+	$post_type = pmp_get_post_type();
 
-	if ($screen->id == 'post') {
+	if ($screen->id == $post_type) {
 		global $post;
 
 		add_meta_box(
 			'pmp_document_meta',
 			'PMP: Document information',
 			'pmp_mega_meta_box',
-			'post', 'side'
+			$post_type,
+			'side'
 		);
 	}
 }

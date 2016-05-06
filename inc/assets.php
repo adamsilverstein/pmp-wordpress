@@ -61,7 +61,7 @@ function pmp_enqueue_assets() {
 	}
 
 	$screen = get_current_screen();
-	if ($screen->base == 'post' && $screen->post_type == 'post') {
+	if ($screen->base == 'post' && $screen->post_type == pmp_get_post_type()) {
 		wp_enqueue_style('pmp-common');
 		wp_enqueue_script('pmp-post');
 	}

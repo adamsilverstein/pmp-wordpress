@@ -156,7 +156,7 @@ class PmpPost extends PmpSyncer {
       return false;
     }
     if (!empty($this->doc->attributes->tags)) {
-      wp_set_post_tags($this->post->ID, $this->doc->attributes->tags, true);
+		wp_set_post_terms( $this->post->ID, $this->doc->attributes->tags, pmp_get_tag_taxonomy_name(), true );
     }
     return true;
   }
@@ -236,7 +236,7 @@ class PmpPost extends PmpSyncer {
     }
 
     // tags!
-    $tags = wp_get_post_tags($this->post->ID);
+    $tags = get_the_terms( $this->post->ID, pmp_get_tag_taxonomy_name() );
     if (!empty($tags)) {
       $this->doc->attributes->tags = array();
       foreach ($tags as $tagObj) {

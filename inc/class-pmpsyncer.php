@@ -204,7 +204,7 @@ abstract class PmpSyncer {
       'post_title'   => "draft pmp-pulled content: {$this->doc->attributes->guid}",
       'post_content' => "draft pmp-pulled content: {$this->doc->attributes->guid}",
       'post_author'  => get_current_user_id(), // TODO: often null
-      'post_type'    => 'post',
+      'post_type'    => pmp_get_post_type(),
       'post_status'  => 'auto-draft',
     );
     $id_or_error = wp_insert_post($data, true);

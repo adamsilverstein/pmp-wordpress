@@ -1,18 +1,33 @@
 <?php
 
 /**
- * Render a template by specifying a filename and context.
+ * Return destination post type
  *
- * @param (string) $template -- the filename of the template to render.
- * @param (array) $context -- associative array of values used within the template.
- *
- * @since 0.1
+ * @return string
  */
-function pmp_render_template($template, $context=false) {
-	if (!empty($context))
-		extract($context);
+function pmp_get_post_type() {
+	/**
+	 * Filter feed destination post type
+	 *
+	 * @param string $post_type
+	 */
+	$post_type = apply_filters( 'pmp_post_type', 'post' );
+	return (string) $post_type;
+}
 
-	include PMP_TEMPLATE_DIR . '/' . $template;
+/**
+ * Return tag taxonomy for the destination post
+ *
+ * @return string
+ */
+function pmp_get_tag_taxonomy_name() {
+	/**
+	 * Filter tag taxonomy
+	 *
+	 * @param string $tag_tax
+	 */
+	$tag_tax =  apply_filters( 'pmp_tag_taxonomy', 'post_tag' );
+	return (string) $tag_tax;
 }
 
 /**
