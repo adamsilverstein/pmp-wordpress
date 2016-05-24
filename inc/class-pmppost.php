@@ -136,6 +136,12 @@ class PmpPost extends PmpSyncer {
 
     // save changes to content
     if ($content != $this->post->post_content) {
+
+		/**
+		 * Filter content before saving
+		 */
+		$content = apply_filters( 'pmp_pull_post_content', $content, $this->post );
+
       $id_or_error = wp_update_post(array('ID' => $this->post->ID, 'post_content' => $content), true);
       if (is_wp_error($id_or_error)) {
         var_log("pull_post_data ERROR for [{$this->doc->attributes->guid}] - {$id_or_error->get_error_message()}");

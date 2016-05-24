@@ -150,6 +150,12 @@ class PmpAttachment extends PmpSyncer {
         $this->post_meta['pmp_audio_shortcode'] = $shortcode;
         update_post_meta($this->post->ID, 'pmp_audio_url', $url);
         update_post_meta($this->post->ID, 'pmp_audio_shortcode', $shortcode);
+
+		/**
+		 * Fires after post meta audio updates
+		 */
+		do_action( 'pmp_pull_post_metadata_audio', $this->doc, $this->post, $url );
+
         return true;
       }
       else {
@@ -160,6 +166,12 @@ class PmpAttachment extends PmpSyncer {
         return false;
       }
     }
+
+	/**
+	 * Fires after post meta updates
+	 */
+	do_action( 'pmp_pull_post_metadata' );
+
     return true;
   }
 
