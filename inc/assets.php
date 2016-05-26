@@ -128,7 +128,14 @@ function pmp_save_search_query_template($query_data=null) { ?>
 								$selected_cats = $query_data->options->post_category;
 							else
 								$selected_cats = null;
-							wp_category_checklist(null, null, $selected_cats);
+
+							// Your taxonomy of choice!
+							$taxonomy = apply_filters( 'pmp_categories_taxonomy','category' );
+							$args = array(
+								'taxonomy'      => $taxonomy,
+								'selected_cats' => $selected_cats,
+							);
+							wp_terms_checklist( null, $args );
 						?>
 					</ul>
 				</div>
