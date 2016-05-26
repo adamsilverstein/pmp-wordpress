@@ -141,6 +141,11 @@ class PmpAttachment extends PmpSyncer {
       $this->post_meta['_wp_attachment_image_alt'] = $this->doc->attributes->title;
       update_post_meta($this->post->ID, 'pmp_image_url', $enclosure->href);
       update_post_meta($this->post->ID, '_wp_attachment_image_alt', $this->doc->attributes->title);
+
+		/**
+		 * Fires after post meta audio updates
+		 */
+		do_action( 'pmp_pull_post_metadata_image', $this->doc, $this->post );
     }
     else if ($this->doc->getProfileAlias() == 'audio') {
       $url = SdkWrapper::getPlayableUrl($this->doc);
@@ -165,7 +170,7 @@ class PmpAttachment extends PmpSyncer {
 		/**
 		 * Fires after post meta audio updates
 		 */
-		do_action( 'pmp_pull_post_metadata_audio', $this->doc, $this->post, $url );
+		do_action( 'pmp_pull_post_metadata_audio', $this->doc, $this->post );
 
 		return $return;
     }

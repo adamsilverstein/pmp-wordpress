@@ -168,7 +168,7 @@ class PmpPost extends PmpSyncer {
       return false;
     }
     if (!empty($this->doc->attributes->tags)) {
-		wp_set_post_terms( $this->post->ID, $this->doc->attributes->tags, pmp_get_tag_taxonomy_name(), true );
+	    wp_set_object_terms( $this->post->ID, $this->doc->attributes->tags, pmp_get_tag_taxonomy_name(), true );
     }
     return true;
   }
