@@ -149,6 +149,12 @@ class PmpPost extends PmpSyncer {
       }
       $this->post = get_post($id_or_error);
     }
+
+	/**
+	 * Fires after post meta audio updates
+	 */
+	do_action( 'pmp_pull_post_data', $this->doc, $this->post );
+
     return true;
   }
 
