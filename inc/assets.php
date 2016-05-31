@@ -124,15 +124,22 @@ function pmp_save_search_query_template($query_data=null) { ?>
 				<div class="pmp-category-checklist">
 					<ul>
 						<?php
-							if (!empty($query_data->options) && !empty($query_data->options->post_category))
-								$selected_cats = $query_data->options->post_category;
-							else
-								$selected_cats = null;
-
 							// Your taxonomy of choice!
-							$taxonomy = apply_filters( 'pmp_categories_taxonomy','category' );
+							$category_taxonomy = apply_filters( 'pmp_categories_taxonomy','category' );
+
+							if ( ! empty( $query_data->options ) ) {
+								if ( 'category' === $category_taxonomy ) {
+									$category_terms_name = 'post_category';
+								} else {
+									$category_terms_name = 'tax_input_' . $category_taxonomy;
+								}
+								$selected_cats  = ! empty( $query_data->options->{$category_terms_name} ) ? $query_data->options->{$category_terms_name} : null;
+							} else {
+								$selected_cats = null;
+							}
+
 							$args = array(
-								'taxonomy'      => $taxonomy,
+								'taxonomy'      => $category_taxonomy,
 								'selected_cats' => $selected_cats,
 							);
 							wp_terms_checklist( null, $args );

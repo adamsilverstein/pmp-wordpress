@@ -429,10 +429,14 @@ var PMP = PMP || {};
             _.each(serialized, function(val, idx) {
                 if (val.value !== '') {
                     if (val.name.match(/\[\]$/)) {
-                        if (!formData[val.name.replace('[]', '')])
-                            formData[val.name.replace('[]', '')] = [];
+						var meta_key = val.name.replace('[]', '');
+						    meta_key = meta_key.replace(/\[/g, '_');
+						    meta_key = meta_key.replace(/\]/g, '');
 
-                        formData[val.name.replace('[]', '')].push(val.value);
+                        if (!formData[meta_key])
+                            formData[meta_key] = [];
+
+                        formData[meta_key].push(val.value);
                     } else
                         formData[val.name] = val.value;
                 }

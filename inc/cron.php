@@ -106,26 +106,38 @@ function pmp_import_for_saved_queries() {
 			if (is_null($last_created) || $item->attributes->created > $last_created)
 				$last_created = $item->attributes->created;
 
+			// Category taxonoky of your choice!
+			$category_taxonomy = apply_filters( 'pmp_categories_taxonomy', 'category' );
+			if ( 'category' === $category_taxonomy ) {
+				$category_terms_name = 'post_category';
+			} else {
+				$category_terms_name = 'tax_input_' . $category_taxonomy;
+			}
+
 			// set the category(s)
-			if (isset($query_data->options->post_category)) {
+			if ( isset( $query_data->options->{$category_terms_name} ) ) {
+				$terms = $query_data->options->{$category_terms_name};
 				// Make sure "Uncategorized" category doesn't stick around if it
 				// wasn't explicitly set as a category for the saved search import.
-				$assigned_categories = wp_get_post_categories($post_id);
+				$assigned_categories = wp_get_object_terms( $post_id, $category_taxonomy );
 				$uncategorized = get_category(1);
 
 				// Check for "Uncategorized" in the already-assigned categories
 				$in_assigned_cats = array_search($uncategorized->term_id, $assigned_categories);
 				// Check for "Uncategorized" in the saved-search categories
-				$in_saved_search_cats = array_search($uncategorized->term_id, $query_data->options->post_category);
+				$in_saved_search_cats = array_search($uncategorized->term_id, $terms);
 
 				// If "Uncategorized" is in assigned categories and NOT in saved-search categories, ditch it.
 				if ($in_assigned_cats >= 0 && $in_saved_search_cats === false)
 					unset($assigned_categories[array_search($uncategorized->term_id, $assigned_categories)]);
 
 				// Set the newly generated list of categories for the post
-				wp_set_post_categories(
-					$post_id, array_values(array_unique(array_merge(
-						$assigned_categories, $query_data->options->post_category)))
+				wp_set_object_terms(
+					$post_id,
+					array_values( array_unique(
+						array_merge( $assigned_categories, $terms )
+					)),
+					$category_taxonomy
 				);
 			}
 		}
