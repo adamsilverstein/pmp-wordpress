@@ -103,6 +103,8 @@ function pmp_import_for_saved_queries() {
 			if (!$post_id)
 				continue;
 
+			do_action( 'pmp_after_cron_import_post', $post_id, $query_data );
+
 			if (is_null($last_created) || $item->attributes->created > $last_created)
 				$last_created = $item->attributes->created;
 
