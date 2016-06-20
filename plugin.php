@@ -135,16 +135,26 @@ function pmp_add_meta_boxes() {
 	$screen = get_current_screen();
 	$post_type = pmp_get_post_type();
 
-	if ($screen->id == $post_type) {
+	/**
+	 * Filter admin metaboxes to show
+	 *
+	 * Unset meta box ID if not needed.
+	 */
+	$admin_metaboxes = apply_filters( 'pmp_admin_meta_boxes', array( 'pmp_document_meta' ) );
+	$admin_metaboxes = is_array( $admin_metaboxes ) ? $admin_metaboxes : [];
+
+	if ( $screen->id == $post_type ) {
 		global $post;
 
-		add_meta_box(
-			'pmp_document_meta',
-			'PMP: Document information',
-			'pmp_mega_meta_box',
-			$post_type,
-			'side'
-		);
+		if ( in_array( 'pmp_document_meta', $admin_metaboxes, true ) ) {
+			add_meta_box(
+				'pmp_document_meta',
+				'PMP: Document information',
+				'pmp_mega_meta_box',
+				$post_type,
+				'side'
+			);
+		}
 	}
 }
 add_action('add_meta_boxes', 'pmp_add_meta_boxes');
