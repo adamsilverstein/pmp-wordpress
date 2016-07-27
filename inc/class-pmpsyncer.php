@@ -153,7 +153,13 @@ abstract class PmpSyncer {
     // now sync pmp data (don't short-circuit, to make sure pmp_guid is set!)
     $data_success = $this->pull_post_data();
     $meta_success = $this->pull_post_metadata();
-    return ($data_success && $meta_success);
+
+	/**
+	 * Fires when post and metadata are setup.
+	 */
+	do_action( 'pmp_after_pull_syncer', $this->post, $this->doc );
+
+	return ($data_success && $meta_success);
   }
 
   /**
