@@ -150,6 +150,7 @@ var PMP = PMP || {};
                     return false;
                 },
                 error: function(response) {
+					console.log('LOG >>>> ',response);
                     alert('There was an error processing your request. Message: "' + response.responseJSON.message + '"');
                     self.trigger(action + '_error');
                     window.location.reload(true);
