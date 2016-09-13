@@ -1,6 +1,6 @@
 <?php
 
-define('PMP_NOTIFICATIONS_SECRET', crypt(get_bloginfo('url'), wp_salt('auth')));
+define('PMP_NOTIFICATIONS_SECRET', password_hash( get_bloginfo('url'), PASSWORD_BCRYPT ));
 define('PMP_NOTIFICATIONS_HUB', 'notifications');
 define('PMP_NOTIFICATIONS_TOPIC_UPDATED', 'topics/updated');
 define('PMP_NOTIFICATIONS_TOPIC_DELETED', 'topics/deleted');
