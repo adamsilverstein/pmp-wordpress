@@ -335,9 +335,10 @@ function _pmp_ajax_create_post($is_draft=false) {
 	}
 	else {
 		$syncer = PmpPost::fromDoc($doc);
+		$post_status = ( $is_draft ) ? 'draft' : 'publish';
 
 		// pull from PMP
-		if ($syncer->pull()) {
+		if ( $syncer->pull( false, $post_status ) ) {
 			return array(
 				'success' => true,
 				'data' => array(

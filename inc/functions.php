@@ -1,6 +1,36 @@
 <?php
 
 /**
+ * Return destination post type
+ *
+ * @return string
+ */
+function pmp_get_post_type() {
+	/**
+	 * Filter feed destination post type
+	 *
+	 * @param string $post_type
+	 */
+	$post_type = apply_filters( 'pmp_post_type', 'post' );
+	return (string) $post_type;
+}
+
+/**
+ * Return tag taxonomy for the destination post
+ *
+ * @return string
+ */
+function pmp_get_tag_taxonomy_name() {
+	/**
+	 * Filter tag taxonomy
+	 *
+	 * @param string $tag_tax
+	 */
+	$tag_tax =  apply_filters( 'pmp_tag_taxonomy', 'post_tag' );
+	return (string) $tag_tax;
+}
+
+/**
  * Render a template by specifying a filename and context.
  *
  * @param (string) $template -- the filename of the template to render.

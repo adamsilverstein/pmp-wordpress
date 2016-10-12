@@ -153,7 +153,13 @@ abstract class PmpSyncer {
     // now sync pmp data (don't short-circuit, to make sure pmp_guid is set!)
     $data_success = $this->pull_post_data();
     $meta_success = $this->pull_post_metadata();
-    return ($data_success && $meta_success);
+
+	/**
+	 * Fires when post and metadata are setup.
+	 */
+	do_action( 'pmp_after_pull_syncer', $this->post, $this->doc );
+
+	return ($data_success && $meta_success);
   }
 
   /**
@@ -204,7 +210,7 @@ abstract class PmpSyncer {
       'post_title'   => "draft pmp-pulled content: {$this->doc->attributes->guid}",
       'post_content' => "draft pmp-pulled content: {$this->doc->attributes->guid}",
       'post_author'  => get_current_user_id(), // TODO: often null
-      'post_type'    => 'post',
+      'post_type'    => pmp_get_post_type(),
       'post_status'  => 'auto-draft',
     );
     $id_or_error = wp_insert_post($data, true);

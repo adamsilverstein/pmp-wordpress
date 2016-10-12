@@ -141,6 +141,11 @@ class PmpAttachment extends PmpSyncer {
       $this->post_meta['_wp_attachment_image_alt'] = $this->doc->attributes->title;
       update_post_meta($this->post->ID, 'pmp_image_url', $enclosure->href);
       update_post_meta($this->post->ID, '_wp_attachment_image_alt', $this->doc->attributes->title);
+
+		/**
+		 * Fires after post meta audio updates
+		 */
+		do_action( 'pmp_pull_post_metadata_image', $this->doc, $this->post );
     }
     else if ($this->doc->getProfileAlias() == 'audio') {
       $url = SdkWrapper::getPlayableUrl($this->doc);
@@ -150,16 +155,31 @@ class PmpAttachment extends PmpSyncer {
         $this->post_meta['pmp_audio_shortcode'] = $shortcode;
         update_post_meta($this->post->ID, 'pmp_audio_url', $url);
         update_post_meta($this->post->ID, 'pmp_audio_shortcode', $shortcode);
-        return true;
+
+        $return = true;
       }
       else {
         unset($this->post_meta['pmp_audio_url']);
         unset($this->post_meta['pmp_audio_shortcode']);
         update_post_meta($this->post->ID, 'pmp_audio_url', null);
         update_post_meta($this->post->ID, 'pmp_audio_shortcode', null);
-        return false;
+
+		$return = false;
       }
+
+		/**
+		 * Fires after post meta audio updates
+		 */
+		do_action( 'pmp_pull_post_metadata_audio', $this->doc, $this->post );
+
+		return $return;
     }
+
+	/**
+	 * Fires after post meta updates
+	 */
+	do_action( 'pmp_pull_post_metadata' );
+
     return true;
   }
 
